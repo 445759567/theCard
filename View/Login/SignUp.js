@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, View} from "react-native";
 import {connect} from "react-redux";
 import {NormalText} from "../../components";
-import {firebaseApp} from "../../firebaseConfig";
 import {TextInput} from "../../components/TextInput";
 import IKidzButton from "../../components/ikidzButton";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";

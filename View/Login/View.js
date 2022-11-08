@@ -3,14 +3,12 @@ import {TouchableOpacity, View} from "react-native";
 import {connect} from "react-redux";
 import {NormalText} from "../../components";
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
-import {firebaseApp} from "../../firebaseConfig";
 import {useNavigation} from "@react-navigation/native";
 import {colors} from "../../globalVariables";
 import {TextInput} from "../../components/TextInput";
 import IKidzButton from "../../components/ikidzButton";
 import {setUserAction, setUserIDAction} from "../UCenter/actionCreator";
 
-const auth = getAuth(firebaseApp)
 function Login({...props}) {
     const navigation = useNavigation()
     const auth = getAuth()

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, TouchableOpacity, View} from "react-native";
+import {Alert, Button, TouchableOpacity, View} from "react-native";
 import {connect} from "react-redux";
 import {NormalText} from "../../components";
 import ShadowCard from "../../components/ShadowCard";
@@ -14,13 +14,14 @@ import {setUserAction, setUserIDAction} from "./actionCreator";
 function UCenter({...props}) {
     const auth = getAuth()
     const navigation = useNavigation()
-    const [value, setValue] = useState(0)
     useEffect(() => {
 
     }, []);
     const onUserTitlePress = () =>{
         if(!props.userID){
             onSignIn()
+        }else{
+            navigation.navigate('editUserInfo')
         }
     }
     const onSignIn = () =>{
@@ -55,6 +56,9 @@ function UCenter({...props}) {
             alert(e)
         }
     }
+    const onTestPress = () =>{
+        alert(JSON.stringify(props.user))
+    }
     return (
         <View style={{padding:0}}>
             <TouchableOpacity style={styles.userTitle} onPress={onUserTitlePress}>
@@ -69,7 +73,7 @@ function UCenter({...props}) {
                     props.userID?
                         <View style={{alignItems:'center'}}>
                             <NormalText>{props.user.email}</NormalText>
-                            <NormalText>{props.user.displayName || 'Unnamed user'}, welcome to The Card</NormalText>
+                            <NormalText>{props.user.displayName || 'Unnamed user'}, welcome to The Card!</NormalText>
                         </View>:
                         <NormalText>Sign in</NormalText>
                 }
@@ -83,6 +87,7 @@ function UCenter({...props}) {
                         </TouchableOpacity>:null
                 }
             </View>
+            <Button title={'test'} onPress={onTestPress}/>
         </View>
     );
 }

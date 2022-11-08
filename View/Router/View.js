@@ -7,6 +7,7 @@ import BottomTabRouter from "../BottomTabRouter/View";
 import {colors} from "../../globalVariables";
 import Login from "../Login/View";
 import SignUp from "../Login/SignUp";
+import EditUserInfo from "../UCenter/EditUserInfo";
 
 const Stack = createStackNavigator()
 function Router({...props}) {
@@ -59,13 +60,29 @@ function Router({...props}) {
             />
         )
     }
+    const EditUserInfoStack = () =>{
+        return(
+            <Stack.Screen
+                name="editUserInfo"
+                options={({navigation})=>({
+                    title: 'Profile',
+                    headerStyle:{backgroundColor: colors.yellow},
+                })}
+                children={(props) => (
+                    <EditUserInfo
+                        {...props}
+                    />
+                )}
+            />
+        )
+    }
     return (
         <View style={{flex:1}}>
-            {/*<NormalText>123</NormalText>*/}
             <Stack.Navigator>
                 {BottomTabStack()}
                 {LoginStack()}
                 {SignUpStack()}
+                {EditUserInfoStack()}
             </Stack.Navigator>
         </View>
     );
