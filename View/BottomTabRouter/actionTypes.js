@@ -1,0 +1,1 @@
+//export const DEALS_LEARNING = 'BottomTabRouter/DEALS_LEARNING'
