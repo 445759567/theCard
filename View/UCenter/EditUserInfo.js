@@ -57,7 +57,7 @@ function EditUserInfo({...props}) {
                 onChangeText={onNickNameChange}
             />
 
-            <IKidzButton title={'Update'} onPress={onUpdatePress} loading={updateLoading}/>
+            <IKidzButton title={'Update'} onPress={onUpdatePress} loading={updateLoading} disabled={updateLoading}/>
         </View>
     );
 }

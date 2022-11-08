@@ -4,6 +4,7 @@ import {colors} from "../globalVariables";
 import NormalText from "./normalText";
 
 export default function IKidzButton({title, variant = 'default', disabled, loading, onPress, children, FrontIcon, ...props}) {
+    disabled = disabled || loading
     const titleElement = React.isValidElement(title) ? (
         title
     ) : (

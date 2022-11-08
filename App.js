@@ -6,9 +6,12 @@ import {Provider} from 'react-redux'
 import Router from "./View/Router/View";
 import {useFonts} from "expo-font";
 import store from './store/'
+import {initializeApp} from "firebase/app";
+import {firebaseConfig} from "./firebaseConfig";
 
 export default function App() {
 
+    const app = initializeApp(firebaseConfig);
     let [fontsLoaded] = useFonts({
         'Poppins-Regular': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
         'Poppins-Light': require('./assets/fonts/Poppins/Poppins-Light.ttf'),

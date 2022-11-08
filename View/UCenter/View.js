@@ -8,15 +8,36 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import {colors} from "../../globalVariables";
 import styles from "./style";
 import {useNavigation} from "@react-navigation/native";
-import {getAuth, signOut} from "firebase/auth";
+import {getAuth, signOut, sendEmailVerification, reload} from "firebase/auth";
 import {setUserAction, setUserIDAction} from "./actionCreator";
+import IKidzButton from "../../components/ikidzButton";
 
+const activateTimeLimit = 60
 function UCenter({...props}) {
     const auth = getAuth()
     const navigation = useNavigation()
+    const [activateButtonLoading, setActivateButtonLoading] = useState(false)
+    const [activateCountdown, setActivateCountdown] = useState(0)
     useEffect(() => {
-
-    }, []);
+        if(!props.userID) {
+            setActivateCountdown(0)
+            return;
+        }
+        setTimeout(()=>{
+            if(activateCountdown > 0){
+                setActivateCountdown(activateCountdown-1)
+            }
+        }, 1000)
+        if(activateCountdown % 10 === 0 && !props.user.emailVerified && activateCountdown > 0){
+            console.log('getting user info')
+            reload(auth.currentUser).then(()=>{
+                if(auth.currentUser.emailVerified){
+                    setActivateButtonLoading(false)
+                    setActivateCountdown(0)
+                }
+            })
+        }
+    }, [activateCountdown]);
     const onUserTitlePress = () =>{
         if(!props.userID){
             onSignIn()
@@ -56,8 +77,22 @@ function UCenter({...props}) {
             alert(e)
         }
     }
+    const onVerifyPress = async () =>{
+        setActivateButtonLoading(true)
+        try {
+            await sendEmailVerification(auth.currentUser)
+            setActivateButtonLoading(false)
+            alert('An email has been sent to your email, verify your account by clicking the link in the email. Check junk box if necessary.')
+            setActivateCountdown(activateTimeLimit)
+        }catch (e) {
+            alert(e.name+': '+e.code)
+        }
+    }
     const onTestPress = () =>{
-        alert(JSON.stringify(props.user))
+        // setActivateButtonLoading(false)
+        // reload(auth.currentUser).then(()=>{
+        //     console.log(auth.currentUser)
+        // })
     }
     return (
         <View style={{padding:0}}>
@@ -78,6 +113,26 @@ function UCenter({...props}) {
                         <NormalText>Sign in</NormalText>
                 }
             </TouchableOpacity>
+            {
+                props.userID && (
+                    props.user.emailVerified?
+                        <View>
+                            <NormalText>Your email is verified</NormalText>
+                        </View>:
+                        <View style={{padding:10}}>
+                            <NormalText>To start, activate your account</NormalText>
+                            <IKidzButton title={'Activate' + (activateCountdown > 0? `(${activateCountdown})`:'')} onPress={onVerifyPress} loading={activateButtonLoading} disabled={activateButtonLoading || activateCountdown >0}/>
+                        </View>
+                )
+            }
+            {/*{*/}
+            {/*    (props.userID && !props.user.emailVerified) &&*/}
+            {/*    <View style={{padding:10}}>*/}
+            {/*        <NormalText>To start, activate your account</NormalText>*/}
+            {/*        <IKidzButton title={'Activate' + (activateCountdown > 0? `(${activateCountdown})`:'')} onPress={onVerifyPress} loading={activateButtonLoading} disabled={activateButtonLoading || activateCountdown >0}/>*/}
+            {/*    </View>*/}
+            {/*}*/}
+
             <View style={{alignItems:'flex-end', padding:10}}>
 
                 {
