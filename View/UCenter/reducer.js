@@ -1,7 +1,8 @@
-import {USER_ID} from './actionTypes'
+import {USER_ID, USER} from './actionTypes'
 
 const defaultState = {
     userID:'',
+    user:{}
 };
 
 export default (state = defaultState, action) => {
@@ -10,6 +11,11 @@ export default (state = defaultState, action) => {
             return {
                 ...state,
                 userID: action.data
+            }
+        case USER:
+            return {
+                ...state,
+                user: action.data
             }
     }
 

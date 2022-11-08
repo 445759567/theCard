@@ -2,50 +2,61 @@ import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, View} from "react-native";
 import {connect} from "react-redux";
 import {NormalText} from "../../components";
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import {firebaseApp} from "../../firebaseConfig";
-import {useNavigation} from "@react-navigation/native";
-import {colors} from "../../globalVariables";
 import {TextInput} from "../../components/TextInput";
 import IKidzButton from "../../components/ikidzButton";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {colors} from "../../globalVariables";
 import {setUserAction, setUserIDAction} from "../UCenter/actionCreator";
+import {useNavigation} from "@react-navigation/native";
 
-const auth = getAuth(firebaseApp)
-function Login({...props}) {
-    const navigation = useNavigation()
+function SignUp({...props}) {
     const auth = getAuth()
+    const navigation = useNavigation()
     const [errorMessage, setErrorMessage] = useState('')
     const [emailAddress, setEmailAddress] = useState('tdy9600009@gmail.com')
     const [password, setPassword] = useState('123456')
-    const [signInLoading, setSignInLoading] = useState(false)
+    const [repeatPassword, setRepeatPassword] = useState('123456')
+    const [signUpLoading, setSignUpLoading] = useState(false)
+
     useEffect(() => {
-        // console.log('hello')
+
     }, []);
+
     const onEmailAddressChange = (text) =>{
         setEmailAddress(text)
     }
     const onPasswordChange = (text) =>{
         setPassword(text)
     }
-    const onSignUpPress = () =>{
-        navigation.navigate('signUp')
+    const onRepeatPassword = (text) =>{
+        setRepeatPassword(text)
     }
-    const onSignInPress = async () =>{
-        setSignInLoading(true)
+    const onSignUpPress = async () =>{
+        if(password !== repeatPassword){
+            setErrorMessage('Password is different from Confirmed')
+            return
+        }
+        setSignUpLoading(true)
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, emailAddress, password)
-            setSignInLoading(false)
+            console.log('signing up user')
+            setErrorMessage('')
+            const userCredential = await createUserWithEmailAndPassword(auth, emailAddress, password)
+            console.log(userCredential.user)
+            setSignUpLoading(false)
             props.setUser(userCredential.user)
             props.setUserID(userCredential.user.uid)
             navigation.navigate('Home')
         }catch (e) {
-            // console.log(e)
             setErrorMessage(e.name+':\n'+e.code)
-            setSignInLoading(false)
+            setSignUpLoading(false)
         }
     }
+    const onSignInPress = () =>{
+        navigation.navigate('login')
+    }
     return (
-        <View style={{padding:10, alignItems:'center', justifyContent:'center', flex:1}}>
+        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
             {
                 errorMessage &&
                 <NormalText style={{color:colors.warnOrange}}>{errorMessage}</NormalText>
@@ -60,10 +71,16 @@ function Login({...props}) {
                 placeholder={'password'}
                 onChangeText={onPasswordChange} secureTextEntry
             />
+            <TextInput
+                value={repeatPassword}
+                placeholder={'Confirm Password'}
+                onChangeText={onRepeatPassword} secureTextEntry
+            />
 
-            <IKidzButton title={'Sign In'} onPress={onSignInPress} loading={signInLoading}/>
-            <TouchableOpacity onPress={onSignUpPress}>
-                <NormalText>Don't have an account? Sign up</NormalText>
+            <IKidzButton title={'Sign Up'} onPress={onSignUpPress} loading={signUpLoading}/>
+
+            <TouchableOpacity onPress={onSignInPress}>
+                <NormalText>Already have an account? Sign in</NormalText>
             </TouchableOpacity>
         </View>
     );
@@ -86,4 +103,4 @@ const mapDispatch = (dispatch) => {
         },
     }
 }
-export default connect(mapState, mapDispatch)(Login);
+export default connect(mapState, mapDispatch)(SignUp);

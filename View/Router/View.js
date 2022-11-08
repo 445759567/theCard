@@ -5,6 +5,8 @@ import {NormalText} from "../../components";
 import { createStackNavigator } from '@react-navigation/stack';
 import BottomTabRouter from "../BottomTabRouter/View";
 import {colors} from "../../globalVariables";
+import Login from "../Login/View";
+import SignUp from "../Login/SignUp";
 
 const Stack = createStackNavigator()
 function Router({...props}) {
@@ -19,9 +21,38 @@ function Router({...props}) {
                 })}
                 children={(props) => (
                     <BottomTabRouter
-                        // onLogin={onLogin}
-                        // getBookmarks={getBookmarks}
-                        // setDeviceToken={setDeviceToken}
+                        {...props}
+                    />
+                )}
+            />
+        )
+    }
+    const LoginStack = () =>{
+        return(
+            <Stack.Screen
+                name="login"
+                options={({navigation})=>({
+                    title: 'Sign In',
+                    headerStyle:{backgroundColor: colors.yellow},
+                })}
+                children={(props) => (
+                    <Login
+                        {...props}
+                    />
+                )}
+            />
+        )
+    }
+    const SignUpStack = () =>{
+        return(
+            <Stack.Screen
+                name="signUp"
+                options={({navigation})=>({
+                    title: 'Sign Up',
+                    headerStyle:{backgroundColor: colors.yellow},
+                })}
+                children={(props) => (
+                    <SignUp
                         {...props}
                     />
                 )}
@@ -33,6 +64,8 @@ function Router({...props}) {
             {/*<NormalText>123</NormalText>*/}
             <Stack.Navigator>
                 {BottomTabStack()}
+                {LoginStack()}
+                {SignUpStack()}
             </Stack.Navigator>
         </View>
     );

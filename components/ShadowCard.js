@@ -25,7 +25,7 @@ function ShadowCard ({onPress, style, elevation, ...props}){
 }
 const mapState = (state) => {
     return{
-        darkMode: state.account.darkMode
+        // darkMode: state.account.darkMode
     }
 }
 
