@@ -33,7 +33,7 @@ function Login({...props}) {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, emailAddress, password)
             setSignInLoading(false)
-            props.setUser(userCredential.user)
+            props.setUser({...userCredential.user})
             props.setUserID(userCredential.user.uid)
             navigation.navigate('Home')
         }catch (e) {

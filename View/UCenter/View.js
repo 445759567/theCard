@@ -14,8 +14,8 @@ import IKidzButton from "../../components/ikidzButton";
 
 const activateTimeLimit = 60
 function UCenter({...props}) {
-    const auth = getAuth()
     const navigation = useNavigation()
+    const auth = getAuth()
     const [activateButtonLoading, setActivateButtonLoading] = useState(false)
     const [activateCountdown, setActivateCountdown] = useState(0)
     useEffect(() => {
@@ -23,15 +23,17 @@ function UCenter({...props}) {
             setActivateCountdown(0)
             return;
         }
-        setTimeout(()=>{
-            if(activateCountdown > 0){
+        if(activateCountdown > 0){
+            setTimeout(()=>{
                 setActivateCountdown(activateCountdown-1)
-            }
-        }, 1000)
+            }, 1000)
+        }
         if(activateCountdown % 10 === 0 && !props.user.emailVerified && activateCountdown > 0){
             console.log('getting user info')
             reload(auth.currentUser).then(()=>{
+                console.log(auth.currentUser)
                 if(auth.currentUser.emailVerified){
+                    props.setUser({...auth.currentUser})
                     setActivateButtonLoading(false)
                     setActivateCountdown(0)
                 }

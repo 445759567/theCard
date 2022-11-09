@@ -1,17 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {View} from "react-native";
 import {connect} from "react-redux";
-import {NormalText} from "../../components";
 import { createStackNavigator } from '@react-navigation/stack';
 import BottomTabRouter from "../BottomTabRouter/View";
 import {colors} from "../../globalVariables";
 import Login from "../Login/View";
 import SignUp from "../Login/SignUp";
 import EditUserInfo from "../UCenter/EditUserInfo";
+import {getAuth} from "firebase/auth";
+import {setUserAction, setUserIDAction} from "../UCenter/actionCreator";
 
 const Stack = createStackNavigator()
 function Router({...props}) {
-
+    const auth =  getAuth()
+    useEffect(()=>{
+        //wait for 1 sec otherwise get undefined for user
+        setTimeout(()=>{
+            const user = auth.currentUser
+            if(user){
+                props.setUserID(user.uid)
+                props.setUser({...user})
+            }
+        },1000)
+    },[auth])
     const BottomTabStack = () =>{
         return(
             <Stack.Screen
@@ -95,10 +106,14 @@ const mapState = (state) => {
 }
 const mapDispatch = (dispatch) => {
     return {
-        // setCompanyId(res){
-        //     const action = setCompanyIdAction(res)
-        //     dispatch(action)
-        // },
+        setUserID(res){
+            const action = setUserIDAction(res)
+            dispatch(action)
+        },
+        setUser(res){
+            const action = setUserAction(res)
+            dispatch(action)
+        },
     }
 }
 export default connect(mapState, mapDispatch)(Router);
