@@ -49,6 +49,7 @@ export const reminderOptions = [
     {count:-60*12, id:5, label:'12 hours'},
 ]
 export const colors={
+    brown:'#936617',
     green:'#2ECC71',
     opacityGreen:'rgba(46, 204, 113, 0.7)',
     red:'red',

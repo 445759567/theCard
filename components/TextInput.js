@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         fontSize:fontSize
     }
 });
-export const TextInput = ({placeholder, style, containerStyle, onChangeText, value, hide, Front, Back, ...props}) =>{
+export const TextInput = ({placeholder, style, containerStyle, onChangeText, value, hide, Front, Back, multiline, ...props}) =>{
     return(
         <View style={[styles.textInputContainer, containerStyle]}>
             {Front || null}
@@ -32,6 +32,7 @@ export const TextInput = ({placeholder, style, containerStyle, onChangeText, val
                 style={[styles.textInput, style]}
                 onChangeText={onChangeText}
                 value={value}
+                multiline={multiline || false}
             />
             {Back || null}
         </View>

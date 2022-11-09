@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {View} from "react-native";
 import {connect} from "react-redux";
-import {NormalText} from "../../components";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import UCenter from "../UCenter/View";
-import {colors} from "../../globalVariables";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import CardStack from "../CardStack/View";
+import CardsTab from "../CardsTab/View";
 
 const Tab = createBottomTabNavigator()
 function BottomTabRouter({...props}) {
@@ -36,7 +34,7 @@ function BottomTabRouter({...props}) {
                         // tabBarActiveTintColor: colors.black
                     })}
                 >
-                    {(props) => <CardStack {...props} />}
+                    {(props) => <CardsTab {...props} />}
                 </Tab.Screen>
                 <Tab.Screen
                     name={'uCenter'}

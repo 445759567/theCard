@@ -11,6 +11,7 @@ import {useNavigation} from "@react-navigation/native";
 import {getAuth, signOut, sendEmailVerification, reload} from "firebase/auth";
 import {setUserAction, setUserIDAction} from "./actionCreator";
 import IKidzButton from "../../components/ikidzButton";
+import MyCards from "./MyCards";
 
 const activateTimeLimit = 60
 function UCenter({...props}) {
@@ -127,13 +128,8 @@ function UCenter({...props}) {
                         </View>
                 )
             }
-            {/*{*/}
-            {/*    (props.userID && !props.user.emailVerified) &&*/}
-            {/*    <View style={{padding:10}}>*/}
-            {/*        <NormalText>To start, activate your account</NormalText>*/}
-            {/*        <IKidzButton title={'Activate' + (activateCountdown > 0? `(${activateCountdown})`:'')} onPress={onVerifyPress} loading={activateButtonLoading} disabled={activateButtonLoading || activateCountdown >0}/>*/}
-            {/*    </View>*/}
-            {/*}*/}
+
+            <MyCards/>
 
             <View style={{alignItems:'flex-end', padding:10}}>
 

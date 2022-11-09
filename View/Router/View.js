@@ -9,6 +9,7 @@ import SignUp from "../Login/SignUp";
 import EditUserInfo from "../UCenter/EditUserInfo";
 import {getAuth} from "firebase/auth";
 import {setUserAction, setUserIDAction} from "../UCenter/actionCreator";
+import CardEdit from "../CardEdit/View";
 
 const Stack = createStackNavigator()
 function Router({...props}) {
@@ -33,6 +34,22 @@ function Router({...props}) {
                 })}
                 children={(props) => (
                     <BottomTabRouter
+                        {...props}
+                    />
+                )}
+            />
+        )
+    }
+    const CardEditStack = () =>{
+        return(
+            <Stack.Screen
+                name="cardEdit"
+                options={({navigation})=>({
+                    title: 'Card',
+                    headerStyle:{backgroundColor: colors.yellow},
+                })}
+                children={(props) => (
+                    <CardEdit
                         {...props}
                     />
                 )}
@@ -94,6 +111,7 @@ function Router({...props}) {
                 {LoginStack()}
                 {SignUpStack()}
                 {EditUserInfoStack()}
+                {CardEditStack()}
             </Stack.Navigator>
         </View>
     );

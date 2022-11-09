@@ -1,0 +1,1 @@
+//export const DEALS_LEARNING = 'CardsTab/DEALS_LEARNING'
