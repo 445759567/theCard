@@ -24,13 +24,12 @@ function CardEdit({...props}) {
     const onPostPress = async () =>{
         setPostButtonLoading(true)
         const time = moment().unix()
-        let cardColor = colors.brown
         const reqData = {
             content: content,
             time: time,
             authorID: props.userID,
             active:true,
-            cardColor:cardColor
+            cardStyle:props.cardStyleID
         }
         try {
             // const key = push(ref(db, 'cards/'),reqData).key
@@ -38,7 +37,7 @@ function CardEdit({...props}) {
             await set(ref(db, `cards/${cardID}`), reqData)
             await set(ref(db, 'users/' + props.userID + '/cards/' + cardID), {
                 content: content.slice(0, 20),
-                cardColor:cardColor,
+                cardStyle:props.cardStyleID,
                 active: true
             })
             alert('Your card has been post!')

@@ -6,12 +6,13 @@ import {colors} from "../../globalVariables";
 import ShadowCard from "../../components/ShadowCard";
 import { getDatabase, ref, get, child, onValue } from "firebase/database";
 import styles from "./style";
+import {cardStyles} from "../../CardStyles";
 
 
-const Card = ({bgColor, title}) =>{
+const Card = ({title, cardStyleID}) =>{
     return(
-        <ShadowCard style={[styles.cardContainer, {backgroundColor:bgColor}]}>
-            <NormalText style={{color:colors.white}}>{title}</NormalText>
+        <ShadowCard style={[styles.cardContainer, cardStyles[cardStyleID].card]}>
+            <NormalText style={cardStyles[cardStyleID].text}>{title}</NormalText>
         </ShadowCard>
     )
 }
@@ -45,7 +46,7 @@ function MyCards({...props}) {
                 {
                     myCards.slice(0, 5).map((item, index)=>{
                         return(
-                            <Card bgColor={item.cardColor} title={item.content} key={index}/>
+                            <Card title={item.content} key={index} cardStyleID={item.cardStyle}/>
                         )
                     })
                 }
