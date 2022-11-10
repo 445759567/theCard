@@ -42,7 +42,7 @@ function MyCards({...props}) {
     return (
         <View style={{padding:10, backgroundColor:colors.white}}>
             <NormalText>MyCards: </NormalText>
-            <ScrollView horizontal={true}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
                 {
                     myCards.slice(0, 5).map((item, index)=>{
                         return(

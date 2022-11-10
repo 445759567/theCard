@@ -2,18 +2,13 @@ import {StyleSheet} from "react-native";
 import {colors, windowHeight, windowWidth} from "../../globalVariables";
 
 const styles = StyleSheet.create({
-    map: {
-        height: windowHeight,
-        width: windowWidth
-    },
-    box: {
-        borderWidth: 0,
-        borderRadius: 1,
-        borderColor: colors.yellow,
-        marginTop: 10,
-        // padding:10,
-        // backgroundColor:'lightblue'
-    },
+    card:{
+        width:windowWidth*0.45,
+        aspectRatio:1,
+        borderRadius:10,
+        padding:10,
+        margin:10
+    }
 })
 
 export default styles

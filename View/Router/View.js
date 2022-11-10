@@ -27,16 +27,9 @@ function Router({...props}) {
             // ...
         }
     });
-    // useEffect(()=>{
-    //     //wait for 1 sec otherwise get undefined for user
-    //     setTimeout(()=>{
-    //         const user = auth.currentUser
-    //         if(user){
-    //             props.setUserID(user.uid)
-    //             props.setUser({...user})
-    //         }
-    //     },1000)
-    // },[auth])
+    const onCardPress = async () =>{
+
+    }
     const BottomTabStack = () =>{
         return(
             <Stack.Screen

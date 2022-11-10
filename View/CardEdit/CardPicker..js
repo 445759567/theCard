@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {ScrollView, TouchableOpacity, View} from "react-native";
 import {connect} from "react-redux";
 import {NormalText} from "../../components";
-import {reducer as cardEdit} from "./index";
 import {setCardStyleIDAction} from "./actionCreator";
 import {windowWidth} from "../../globalVariables";
 import {cardStyles} from "../../CardStyles";

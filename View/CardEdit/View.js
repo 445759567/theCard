@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {View, TextInput} from "react-native";
+import React, {useEffect, useRef, useState} from 'react';
+import {View, TextInput, TouchableOpacity, Alert} from "react-native";
 import {connect} from "react-redux";
 import {CButton, NormalText, ShadowCard} from "../../components";
 import styles from "./style";
@@ -8,11 +8,13 @@ import moment from "moment";
 import {colors} from "../../globalVariables";
 import CardPicker from "./CardPicker.";
 import {cardStyles} from "../../CardStyles";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import { TextInput } from "@react-native-material/core";
 
 
 function CardEdit({...props}) {
     const db = getDatabase();
+    const textInputRef = useRef()
     const [content, setContent] = useState('I am a card')
     const [postButtonLoading, setPostButtonLoading] = useState(false)
     useEffect(() => {
@@ -21,7 +23,7 @@ function CardEdit({...props}) {
     const onContentChange = (text) =>{
         setContent(text)
     }
-    const onPostPress = async () =>{
+    const onPost = async () =>{
         setPostButtonLoading(true)
         const time = moment().unix()
         const reqData = {
@@ -32,7 +34,6 @@ function CardEdit({...props}) {
             cardStyle:props.cardStyleID
         }
         try {
-            // const key = push(ref(db, 'cards/'),reqData).key
             const cardID = `${props.userID}_${time}`
             await set(ref(db, `cards/${cardID}`), reqData)
             await set(ref(db, 'users/' + props.userID + '/cards/' + cardID), {
@@ -47,6 +48,21 @@ function CardEdit({...props}) {
         }
         setPostButtonLoading(false)
     }
+    const onPostPress = async () =>{
+        Alert.alert('Post your card', 'You can not edit your card once it is post',[
+            {
+                text:'Cancel',
+                onPress: ()=>{},
+                style: 'cancel'
+            },
+            {
+                text:'Yes',
+                onPress: ()=>{
+                    onPost()
+                }
+            }
+        ])
+    }
     return (
         <View style={styles.container}>
             <NormalText style={styles.title}>Say something</NormalText>
@@ -54,11 +70,10 @@ function CardEdit({...props}) {
                 <CardPicker/>
             </View>
             <ShadowCard style={[styles.cardContainer, cardStyles[props.cardStyleID].card]}>
-                <TextInput style={cardStyles[props.cardStyleID].text} multiline={true} value={content} onChangeText={onContentChange}/>
+                <TextInput ref={textInputRef} style={cardStyles[props.cardStyleID].text} multiline={true} value={content} onChangeText={onContentChange} editable={!postButtonLoading}/>
             </ShadowCard>
             <View style={{height:20}}/>
             <View style={{flex:1}}>
-
                 <CButton onPress={onPostPress} title={'Post'} loading={postButtonLoading}/>
             </View>
         </View>
