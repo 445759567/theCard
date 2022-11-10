@@ -7,23 +7,36 @@ import {colors} from "../../globalVariables";
 import Login from "../Login/View";
 import SignUp from "../Login/SignUp";
 import EditUserInfo from "../UCenter/EditUserInfo";
-import {getAuth} from "firebase/auth";
+import {getAuth, onAuthStateChanged} from "firebase/auth";
 import {setUserAction, setUserIDAction} from "../UCenter/actionCreator";
 import CardEdit from "../CardEdit/View";
 
 const Stack = createStackNavigator()
 function Router({...props}) {
     const auth =  getAuth()
-    useEffect(()=>{
-        //wait for 1 sec otherwise get undefined for user
-        setTimeout(()=>{
-            const user = auth.currentUser
-            if(user){
-                props.setUserID(user.uid)
-                props.setUser({...user})
-            }
-        },1000)
-    },[auth])
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/firebase.User
+            console.log('user is in!!!!')
+            props.setUserID(user.uid)
+            props.setUser({...user})
+            // ...
+        } else {
+            // User is signed out
+            // ...
+        }
+    });
+    // useEffect(()=>{
+    //     //wait for 1 sec otherwise get undefined for user
+    //     setTimeout(()=>{
+    //         const user = auth.currentUser
+    //         if(user){
+    //             props.setUserID(user.uid)
+    //             props.setUser({...user})
+    //         }
+    //     },1000)
+    // },[auth])
     const BottomTabStack = () =>{
         return(
             <Stack.Screen

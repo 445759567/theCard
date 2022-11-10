@@ -19,8 +19,15 @@ const styles = StyleSheet.create({
         margin:20
     },
     textInput:{
+        // color:colors.white
         // borderBottomWidth:1,
         // borderColor:colors.grey
+    },
+    cardPickerItem:{
+        width: windowWidth*0.3,
+        height: undefined,
+        aspectRatio:1,
+        marginHorizontal:5
     },
 })
 

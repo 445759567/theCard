@@ -10,6 +10,13 @@ const styles = StyleSheet.create({
         backgroundColor:colors.white,
         alignItems:'center',
         justifyContent:'center'
+    },
+    cardContainer:{
+        margin:10,
+        borderRadius:10,
+        padding:10,
+        width: windowWidth*0.4,
+        height: windowWidth*0.4
     }
 })
 

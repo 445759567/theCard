@@ -4,27 +4,51 @@ import {connect} from "react-redux";
 import {NormalText} from "../../components";
 import {colors} from "../../globalVariables";
 import ShadowCard from "../../components/ShadowCard";
-import { getDatabase } from "firebase/database";
+import { getDatabase, ref, get, child, onValue } from "firebase/database";
+import styles from "./style";
 
 
-const Card = ({bgColor}) =>{
+const Card = ({bgColor, title}) =>{
     return(
-        <ShadowCard style={{backgroundColor:bgColor, margin:10, borderRadius:10, padding:10}}>
-            <NormalText style={{color:colors.white}}>I'm a card</NormalText>
+        <ShadowCard style={[styles.cardContainer, {backgroundColor:bgColor}]}>
+            <NormalText style={{color:colors.white}}>{title}</NormalText>
         </ShadowCard>
     )
 }
 function MyCards({...props}) {
-    const database = getDatabase();
-    const [value, setValue] = useState(0)
+    const dbRef = ref(getDatabase());
+    const [myCards, setMyCards] = useState([])
     useEffect(() => {
-        // console.log('hello')
+        getCards()
     }, []);
+    const getCards = async ()=>{
+        const db = getDatabase()
+        const cardsRef = ref(db, `users/${props.userID}/cards`)
+        onValue(cardsRef, (snapshot) =>{
+            const data = snapshot.val()
+            //get cards which are active
+            const cards = Object.keys(data).reduce(function (a, b) {
+                console.log(b)
+                if(data[b].active){
+                    a.push(data[b])
+                }
+                return a
+            }, [])
+            console.log(cards)
+            setMyCards(cards)
+        })
+    }
     return (
         <View style={{padding:10, backgroundColor:colors.white}}>
             <NormalText>MyCards: </NormalText>
             <ScrollView horizontal={true}>
-                <Card bgColor={colors.brown}></Card>
+                {
+                    myCards.slice(0, 5).map((item, index)=>{
+                        return(
+                            <Card bgColor={item.cardColor} title={item.content} key={index}/>
+                        )
+                    })
+                }
             </ScrollView>
         </View>
     );
@@ -32,7 +56,7 @@ function MyCards({...props}) {
 
 const mapState = (state) => {
     return {
-        //signIn: state.account.signIn,
+        userID: state.user.userID,
     }
 }
 const mapDispatch = (dispatch) => {

@@ -1,1 +1,1 @@
-//export const DEALS_LEARNING = 'CardEdit/DEALS_LEARNING'
+export const CARD_STYLE_ID = 'CardEdit/CARD_STYLE_ID'

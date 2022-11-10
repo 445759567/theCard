@@ -3,28 +3,64 @@ import {View, TextInput} from "react-native";
 import {connect} from "react-redux";
 import {CButton, NormalText, ShadowCard} from "../../components";
 import styles from "./style";
+import { getDatabase, ref, set, push } from "firebase/database";
+import moment from "moment";
+import {colors} from "../../globalVariables";
+import CardPicker from "./CardPicker.";
+import {cardStyles} from "../../CardStyles";
+// import { TextInput } from "@react-native-material/core";
+
 
 function CardEdit({...props}) {
-    const [content, setContent] = useState('')
+    const db = getDatabase();
+    const [content, setContent] = useState('I am a card')
+    const [postButtonLoading, setPostButtonLoading] = useState(false)
     useEffect(() => {
         // console.log('hello')
     }, []);
     const onContentChange = (text) =>{
         setContent(text)
     }
-    const onPostPress = () =>{
-
+    const onPostPress = async () =>{
+        setPostButtonLoading(true)
+        const time = moment().unix()
+        let cardColor = colors.brown
+        const reqData = {
+            content: content,
+            time: time,
+            authorID: props.userID,
+            active:true,
+            cardColor:cardColor
+        }
+        try {
+            // const key = push(ref(db, 'cards/'),reqData).key
+            const cardID = `${props.userID}_${time}`
+            await set(ref(db, `cards/${cardID}`), reqData)
+            await set(ref(db, 'users/' + props.userID + '/cards/' + cardID), {
+                content: content.slice(0, 20),
+                cardColor:cardColor,
+                active: true
+            })
+            alert('Your card has been post!')
+        }catch (e) {
+            alert('post failed')
+            console.error(e)
+        }
+        setPostButtonLoading(false)
     }
     return (
         <View style={styles.container}>
             <NormalText style={styles.title}>Say something</NormalText>
-            <ShadowCard style={styles.cardContainer}>
-                <TextInput style={styles.textInput} multiline={true} value={content} onChangeText={onContentChange}/>
+            <View style={{flex:1, width:'100%'}}>
+                <CardPicker/>
+            </View>
+            <ShadowCard style={[styles.cardContainer, cardStyles[props.cardStyleID].card]}>
+                <TextInput style={cardStyles[props.cardStyleID].text} multiline={true} value={content} onChangeText={onContentChange}/>
             </ShadowCard>
             <View style={{height:20}}/>
             <View style={{flex:1}}>
 
-                <CButton onPress={onPostPress} title={'Post'}/>
+                <CButton onPress={onPostPress} title={'Post'} loading={postButtonLoading}/>
             </View>
         </View>
     );
@@ -32,7 +68,8 @@ function CardEdit({...props}) {
 
 const mapState = (state) => {
     return {
-        //signIn: state.account.signIn,
+        userID: state.user.userID,
+        cardStyleID: state.cardEdit.cardStyleID,
     }
 }
 const mapDispatch = (dispatch) => {

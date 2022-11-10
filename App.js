@@ -8,10 +8,17 @@ import {useFonts} from "expo-font";
 import store from './store/'
 import {initializeApp} from "firebase/app";
 import {firebaseConfig} from "./firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import {getReactNativePersistence, initializeAuth} from 'firebase/auth/react-native';
 
 export default function App() {
 
     const app = initializeApp(firebaseConfig);
+    // console.log(app)
+    // initializeAuth(app, {
+    //     persistence: getReactNativePersistence(AsyncStorage)
+    // });
     let [fontsLoaded] = useFonts({
         'Poppins-Regular': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
         'Poppins-Light': require('./assets/fonts/Poppins/Poppins-Light.ttf'),

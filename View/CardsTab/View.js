@@ -11,6 +11,10 @@ function CardsTab({...props}) {
         // console.log('hello')
     }, []);
     const onPostNewCardPress = () =>{
+        if(!props.userID){
+            alert('Please sign in first')
+            return
+        }
         navigation.navigate('cardEdit')
     }
     return (
@@ -23,7 +27,7 @@ function CardsTab({...props}) {
 
 const mapState = (state) => {
     return {
-        //signIn: state.account.signIn,
+        userID: state.user.userID,
     }
 }
 const mapDispatch = (dispatch) => {

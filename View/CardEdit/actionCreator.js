@@ -1,6 +1,6 @@
-//import {} from './actionTypes'
+import {CARD_STYLE_ID} from './actionTypes'
 
-//export const setDealsLearningAction = (data) => ({
-//    type: DEALS_LEARNING,
-//   data: data,
-//})
+export const setCardStyleIDAction = (data) => ({
+    type: CARD_STYLE_ID,
+    data: data,
+})

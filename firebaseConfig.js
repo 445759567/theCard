@@ -13,7 +13,8 @@ export const firebaseConfig = {
     storageBucket: "theboard-2b400.appspot.com",
     messagingSenderId: "602182744060",
     appId: "1:602182744060:web:898d57feb8236d57f66479",
-    measurementId: "G-417M411RQB"
+    measurementId: "G-417M411RQB",
+    databaseURL: "https://theboard-2b400-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
 // Initialize Firebase
